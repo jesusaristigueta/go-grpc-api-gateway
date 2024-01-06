@@ -6,7 +6,7 @@ Proyecto de ejemplo basado en un tutorial de microservicios con Go para una API 
 
 El proyecto se comunica con 3 microservicios en Go mediante gRPC.
 
-### Servicio de Autenticacion:
+### Microservicio de Autenticacion:
 
 Proporciona los endpoints para Login, Registro y Validacion de Token via gRPC para autenticacion.
 
