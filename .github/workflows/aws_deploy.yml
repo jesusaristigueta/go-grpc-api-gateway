@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    name: Desplieg a AWS
+    name: Despliegue a AWS
     runs-on: ubuntu-latest
     env:
       INTERNAL_SERVICE_IP: 172.18.1.10
