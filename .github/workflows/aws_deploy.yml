@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-
 jobs:
   deploy:
     name: Despliegue a AWS
@@ -22,6 +21,13 @@ jobs:
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -t rsa ${{ secrets.REMOTE_SERVER_HOST }} >> ~/.ssh/known_hosts
+    - name: Crear archivo .env
+      run: |
+        mkdir -p ./pkg/config/envs/
+        echo "PORT=${{ secrets.PORT }}" >> ./pkg/config/envs/dev.env
+        echo "AUTH_SVC_URL=${{ secrets.AUTH_SVC_URL }}" >> ./pkg/config/envs/dev.env
+        echo "PRODUCT_SVC_URL=${{ secrets.PRODUCT_SVC_URL }}" >> ./pkg/config/envs/dev.env
+        echo "ORDER_SVC_URL=${{ secrets.ORDER_SVC_URL }}" >> ./pkg/config/envs/dev.env
     - name: Construyendo imagen de docker
       run: docker build -t ${{ env.IMAGE_NAME }} .
     - name: Quitando contenedor e imagen
@@ -32,7 +38,6 @@ jobs:
           remote-docker image rm -f ${{ env.IMAGE_NAME }}
       continue-on-error: true
     - name: Comprimiendo & Enviando
-
       run: |
         shopt -s expand_aliases
         alias remote-docker="ssh -C ${{ secrets.REMOTE_SERVER_USER }}@${{ secrets.REMOTE_SERVER_HOST }} docker"
